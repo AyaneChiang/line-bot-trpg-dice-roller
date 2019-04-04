@@ -7,8 +7,6 @@ namespace TRPG_bot.Model
 {
     public class Global
     {
-        public const string CHANNEL_ACCESS_TOKEN = "sdWqXqgT5MB8upxueEnKLZqOuwY2g+a62JqOI1YYBlt7SGmiFGBRZ/6V+XQxvh1GHDC/UdhqUeyWHwxSAgcXMJMgDqu5e4sDiGVucuAEYxqIXQWW9UsdC3vdfloiTw788HzOPNElSpxhndoonMQ/uwdB04t89/1O/w1cDnyilFU=";
-
         #region Request URL
         public const string LINE_API_URL_REPLY = "https://api.line.me/v2/bot/message/reply";
         #endregion
