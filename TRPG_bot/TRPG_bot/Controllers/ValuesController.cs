@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json.Serialization;
@@ -19,6 +20,13 @@ namespace TRPG_bot.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
+        private readonly IConfiguration _config;
+
+        public ValuesController(IConfiguration config)
+        {
+            _config = config;
+        }
+
         [HttpGet]
         public IActionResult Get()
         {
@@ -80,7 +88,7 @@ namespace TRPG_bot.Controllers
             var request = new HttpRequestMessage(HttpMethod.Post, Global.LINE_API_URL_REPLY);
             var content = JsonConvert.SerializeObject(new ReplyTextMessage(replyToken, message), jsonSetting);
             request.Content = new StringContent(content, Encoding.UTF8, "application/json");
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Global.CHANNEL_ACCESS_TOKEN);
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _config["Custom:Line:CHANNEL_ACCESS_TOKEN"]);
 
             var response = await client.SendAsync(request).ConfigureAwait(false);
             response.EnsureSuccessStatusCode();
@@ -93,7 +101,7 @@ namespace TRPG_bot.Controllers
         /// <returns></returns>
         private bool VaridateSignature(string body)
         {
-            var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(Global.CHANNEL_ACCESS_TOKEN));
+            var hmac = new HMACSHA256(Encoding.UTF8.GetBytes(_config["Custom:Line:CHANNEL_ACCESS_TOKEN"]));
             var computeHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(body));
             var contentHash = Convert.ToBase64String(computeHash);
             var headerHash = Request.Headers["X-Line-Signature"];
