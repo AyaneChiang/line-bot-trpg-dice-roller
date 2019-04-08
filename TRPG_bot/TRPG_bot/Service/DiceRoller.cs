@@ -21,17 +21,21 @@ namespace TRPG_bot.Service
             return random.Next(min, max+1);
         }
 
+        #region 基本骰子
         /// <summary>
         /// 基礎骰子
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        public static string rowNormalDice(string input)
+        public static string RowNormalDice(string input)
         {
             var matchList = Regex.Matches(input, Global.REG_SPACE);
             string action = matchList.First().Value;
             int times = int.Parse(Regex.Split(action, "d")[0]);
             int sides = int.Parse(Regex.Split(action, "d")[1].Split("+")[0]);
+
+            if (!ValidHelpler.NormalDice(action, out string msg))
+                return msg;
 
             string comment = matchList.Count > 1 ? matchList.Last().Value : string.Empty;
             string history = string.Empty;
@@ -59,5 +63,43 @@ namespace TRPG_bot.Service
             return $"{comment} {dice_total}[{history}]{plus} = {total}";
 
         }
+        #endregion
+
+        #region 多次基本骰子
+        /// <summary>
+        /// 多次基本骰子
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string RowMultiNormalDice(string input)
+        {
+            var matchList = Regex.Matches(input, Global.REG_SPACE);
+            int times = int.Parse(matchList.First().Value);
+            string action = matchList[1].Value;
+            string comment = matchList.Count > 2 ? matchList.Last().Value : string.Empty;
+
+            #region 防呆
+            string msg = string.Empty;
+            if (!ValidHelpler.MultiNormalDice(times, out msg))
+                return msg;
+
+            if (!ValidHelpler.NormalDice(action, out msg))
+                return msg;
+            #endregion
+
+            string result = 
+                $"{times}次擲骰：\n" +
+                $"{action} {comment}\n";
+
+            for(int i = 0; i < times; i++)
+            {
+                result += $"{i}# ";
+                result += RowNormalDice(action);
+                result += i == times - 1 ? string.Empty : "\n";
+            }
+
+            return result;
+        }
+        #endregion
     }
 }
