@@ -19,6 +19,13 @@ namespace TRPG_bot.Model
         /// 基本骰子
         /// </summary>
         public const string REG_DICE_DEFAULT = @"^\d+d\d+(\+\d+)?";
+        /// <summary>
+        /// 空白
+        /// </summary>
         public const string REG_SPACE = @"\S+";
+        /// <summary>
+        /// 死亡Flag
+        /// </summary>
+        public const string REG_FLAG_BUILDER = @"(立|死亡)flag";
     }
 }
