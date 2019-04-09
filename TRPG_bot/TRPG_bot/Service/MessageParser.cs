@@ -31,6 +31,14 @@ namespace TRPG_bot.Service
             if (Regex.Match(text, Global.REG_ROCK_PAPER_SCISSORS).Success)
                 result.Add(DiceRoller.DoJianken(text));
 
+            //查詢指令
+            if (Regex.Match(action, Global.REG_HELP_COMMAND).Success)
+                result.Add(
+                    $"基本多面骰：1d6+3\n" +
+                    $"多次基本骰：3 1d6+2\n" +
+                    $"死亡flag\n" +
+                    $"猜拳：來猜拳 石頭");
+
             return result;
         }
     }

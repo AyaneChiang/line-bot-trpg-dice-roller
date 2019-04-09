@@ -31,5 +31,9 @@ namespace TRPG_bot.Model
         /// 猜拳
         /// </summary>
         public const string REG_ROCK_PAPER_SCISSORS = @"來猜拳\s+(剪刀|石頭|布)";
+        /// <summary>
+        /// 查詢指令
+        /// </summary>
+        public const string REG_HELP_COMMAND = @"bothelp";
     }
 }
