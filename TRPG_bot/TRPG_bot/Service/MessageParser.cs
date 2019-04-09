@@ -22,9 +22,14 @@ namespace TRPG_bot.Service
             // 多次基本骰
             if (Regex.Match(action, Global.REG_DICE_DEFAULT_MULTIPLE).Success)
                 result.Add(DiceRoller.RowMultiNormalDice(text));
-
-            if (Regex.Match(action, Global.REG_FLAG_BUILDER).Success)
+            
+            // 死亡flag
+            if (Regex.Match(text, Global.REG_FLAG_BUILDER).Success)
                 result.Add(FlagBuilder.Get());
+
+            // 猜拳
+            if (Regex.Match(text, Global.REG_ROCK_PAPER_SCISSORS).Success)
+                result.Add(DiceRoller.DoJianken(text));
 
             return result;
         }

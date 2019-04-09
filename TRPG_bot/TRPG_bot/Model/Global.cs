@@ -22,10 +22,14 @@ namespace TRPG_bot.Model
         /// <summary>
         /// 空白
         /// </summary>
-        public const string REG_SPACE = @"\S+";
+        public const string REG_SPACE = @"\s+";
         /// <summary>
         /// 死亡Flag
         /// </summary>
         public const string REG_FLAG_BUILDER = @"(立|死亡)flag";
+        /// <summary>
+        /// 猜拳
+        /// </summary>
+        public const string REG_ROCK_PAPER_SCISSORS = @"來猜拳\s+(剪刀|石頭|布)";
     }
 }
