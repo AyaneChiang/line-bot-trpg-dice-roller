@@ -29,7 +29,7 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static string RowNormalDice(string input)
         {
-            var matchList = Regex.Matches(input, Global.REG_SPACE);
+            var matchList = Regex.Matches(input, Global.REG_NOT_SPACE);
             string action = matchList.First().Value;
             int times = int.Parse(Regex.Split(action, "d")[0]);
             int sides = int.Parse(Regex.Split(action, "d")[1].Split("+")[0]);
@@ -73,7 +73,7 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static string RowMultiNormalDice(string input)
         {
-            var matchList = Regex.Matches(input, Global.REG_SPACE);
+            var matchList = Regex.Matches(input, Global.REG_NOT_SPACE);
             int times = int.Parse(matchList.First().Value);
             string action = matchList[1].Value;
             string comment = matchList.Count > 2 ? matchList.Last().Value : string.Empty;

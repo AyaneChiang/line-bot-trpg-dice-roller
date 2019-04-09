@@ -24,6 +24,10 @@ namespace TRPG_bot.Model
         /// </summary>
         public const string REG_SPACE = @"\s+";
         /// <summary>
+        /// 非空白字元
+        /// </summary>
+        public const string REG_NOT_SPACE = @"\S+";
+        /// <summary>
         /// 死亡Flag
         /// </summary>
         public const string REG_FLAG_BUILDER = @"(立|死亡)flag";
