@@ -12,15 +12,14 @@ namespace TRPG_bot.Service
         public static List<string> Parse(TextEventMessage eventMessage)
         {
             string text = eventMessage.Text.ToLower();
-            string action = string.IsNullOrWhiteSpace(Regex.Split(text, Global.REG_SPACE)[0]) ? text : Regex.Split(text, Global.REG_SPACE)[0];
             List<string> result = new List<string>();
 
             // 基本骰
-            if (Regex.Match(action, Global.REG_DICE_DEFAULT).Success)
+            if (Regex.Match(text, Global.REG_DICE_DEFAULT).Success)
                 result.Add(DiceRoller.RowNormalDice(text));
 
             // 多次基本骰
-            if (Regex.Match(action, Global.REG_DICE_DEFAULT_MULTIPLE).Success)
+            if (Regex.Match(text, Global.REG_DICE_DEFAULT_MULTIPLE).Success)
                 result.Add(DiceRoller.RowMultiNormalDice(text));
             
             // 死亡flag
@@ -32,7 +31,7 @@ namespace TRPG_bot.Service
                 result.Add(DiceRoller.DoJianken(text));
 
             //查詢指令
-            if (Regex.Match(action, Global.REG_HELP_COMMAND).Success)
+            if (Regex.Match(text, Global.REG_HELP_COMMAND).Success)
                 result.Add(
                     $"基本多面骰：1d6+3\n" +
                     $"多次基本骰：3 1d6+2\n" +
