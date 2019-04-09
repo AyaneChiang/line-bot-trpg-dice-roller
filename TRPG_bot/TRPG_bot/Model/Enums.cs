@@ -2,12 +2,50 @@
 using Newtonsoft.Json.Converters;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using TRPG_bot.Service;
 
 namespace TRPG_bot.Model
 {
+    public static class EnumExt
+    {
+        public static T GetRandom<T>()
+        {
+            Array array = Enum.GetValues(typeof(T));
+            return (T)array.GetValue(DiceRoller.GetRandom(array.Length - 1, 0));
+        }
+
+        public static string GetEmoji(this JiankenType type)
+        {
+            switch (type)
+            {
+                case JiankenType.Paper:
+                    return LineEmoji.GetPaper();
+                case JiankenType.Rock:
+                    return LineEmoji.GetRock();
+                case JiankenType.Scissors:
+                    return LineEmoji.GetScissors();
+                default:
+                    return string.Empty;
+            }
+        }
+
+        public static T ToEnum<T>(this string str)
+        {
+            var enumType = typeof(T);
+            foreach (var name in Enum.GetNames(enumType))
+            {
+                var enumMemberAttribute = ((EnumMemberAttribute[])enumType.GetField(name).GetCustomAttributes(typeof(EnumMemberAttribute), true)).Single();
+                if (enumMemberAttribute.Value == str) return (T)Enum.Parse(enumType, name);
+            }
+            //throw exception or whatever handling you want or
+            return default(T);
+        }
+    }
 
     /// <summary>
     /// Webhook Event Type
@@ -77,5 +115,15 @@ namespace TRPG_bot.Model
         File,
         [EnumMember(Value = "flex")]
         Flex,
+    }
+
+    public enum JiankenType
+    {
+        [EnumMember(Value = "布")]
+        Paper,
+        [EnumMember(Value = "石頭")]
+        Rock,
+        [EnumMember(Value = "剪刀")]
+        Scissors
     }
 }

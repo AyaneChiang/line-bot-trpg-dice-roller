@@ -101,5 +101,20 @@ namespace TRPG_bot.Service
             return result;
         }
         #endregion
+
+        #region 猜拳
+        /// <summary>
+        /// 猜拳
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string DoJianken(string input)
+        {
+            string action = Regex.Match(input, Global.REG_ROCK_PAPER_SCISSORS).Value;
+            string player = Regex.Split(action, Global.REG_SPACE).Last();
+            JiankenType type = player.ToEnum<JiankenType>();
+            return $"{EnumExt.GetRandom<JiankenType>().GetEmoji()} vs {type.GetEmoji()}";
+        }
+        #endregion
     }
 }

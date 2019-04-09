@@ -9,7 +9,7 @@ namespace TRPG_bot.Service
     {
         public static string Get()
         {
-            return FLAG_COMMENT_ARRAY[DiceRoller.GetRandom(FLAG_COMMENT_ARRAY.Length-1)];
+            return FLAG_COMMENT_ARRAY[DiceRoller.GetRandom(FLAG_COMMENT_ARRAY.Length-1, 0)];
         }
 
         private static readonly string[] FLAG_COMMENT_ARRAY =
@@ -21,12 +21,12 @@ namespace TRPG_bot.Service
             $"我一定會活著回來的！{LineEmoji.GetRabbitProud()}",
             $"要像乖孩子一樣等我回來喔{LineEmoji.GetCuteCry()}",
             $"我去去就回來！{LineEmoji.GetJamesHandsome()}",
-            $"你們先走，我很快就會跟上的。",
-            $"這票幹完我就要金盆洗手了",
-            $"明天是女兒的生日…",
-            $"我的小孩就快要出生了…",
-            $"這是我女兒的照片，很可愛吧？",
-            $"真希望這份幸福可以永遠持續下去。",
+            $"你們先走，我很快就會跟上的。{Emoji.GetThumbs()}",
+            $"這票幹完我就要金盆洗手了{Emoji.GetSteamNose()}",
+            $"明天是女兒的生日…{Emoji.GetGirl()} {Emoji.GetBirthdayCake()}",
+            $"我的小孩就快要出生了…{Emoji.GetBaby()} {Emoji.GetBabyBottle()}",
+            $"這是我女兒的照片，很可愛吧？{LineEmoji.GetRabbitProud()}",
+            $"真希望這份幸福可以永遠持續下去。{LineEmoji.GetCuteSatisfy()}",
             $"等到一切結束後，我有些話想跟妳說！",
             $"拜託了…你們是這個世界最後的希望！",
             $"這段時間我過的很開心啊。",
