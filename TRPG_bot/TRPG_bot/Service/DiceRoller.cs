@@ -18,7 +18,7 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static int GetRandom(int max, int min = 1)
         {
-            return random.Next(min, max+1);
+            return random.Next(min, max + 1);
         }
 
         #region 基本骰子
@@ -29,26 +29,24 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static string RowNormalDice(string input)
         {
-            var matchList = Regex.Matches(input, Global.REG_NOT_SPACE);
-            string action = matchList.First().Value;
+            string action = Regex.Match(input, Global.REG_DICE_DEFAULT).Value;
             int times = int.Parse(Regex.Split(action, "d")[0]);
             int sides = int.Parse(Regex.Split(action, "d")[1].Split("+")[0]);
 
             if (!ValidHelpler.NormalDice(action, out string msg))
                 return msg;
 
-            string comment = matchList.Count > 1 ? matchList.Last().Value : string.Empty;
             string history = string.Empty;
             string plus = string.Empty;
             int dice_total = 0;
             int total = 0;
 
-            for(int i = 0; i < times; i++)
+            for (int i = 0; i < times; i++)
             {
                 int num_dice = GetRandom(sides);
                 dice_total += num_dice;
-                history += num_dice;
-                history += i+1 == times ? string.Empty : "+";
+                history += num_dice.ToString().PadLeft(2);
+                history += i + 1 == times ? string.Empty : "+";
             }
 
             total += dice_total;
@@ -60,8 +58,18 @@ namespace TRPG_bot.Service
                 plus += "+" + num_plus;
             }
 
-            return $"{comment} {dice_total}[{history}]{plus} = {total}";
+            return $"{dice_total.ToString().PadLeft(2)}[{history}]{plus} = {total.ToString().PadLeft(2)}";
 
+        }
+
+        /// <summary>
+        /// 基本骰子輸出字串
+        /// </summary>
+        /// <param name="input"></param>
+        /// <returns></returns>
+        public static string GetNormalDiceResult(string input)
+        {
+            return $"{input}\n{RowNormalDice(input)}";
         }
         #endregion
 
@@ -75,7 +83,8 @@ namespace TRPG_bot.Service
         {
             var matchList = Regex.Matches(input, Global.REG_NOT_SPACE);
             int times = int.Parse(matchList.First().Value);
-            string action = matchList[1].Value;
+            string normal = input.Substring(matchList.First().Length + 1, input.Length - (matchList.First().Length + 1));
+            string action = Regex.Match(normal, Global.REG_DICE_DEFAULT).Value;
             string comment = matchList.Count > 2 ? matchList.Last().Value : string.Empty;
 
             #region 防呆
@@ -87,13 +96,13 @@ namespace TRPG_bot.Service
                 return msg;
             #endregion
 
-            string result = 
-                $"{times}次擲骰：\n" +
-                $"{action} {comment}\n";
+            string result =
+                $"{input}\n" +
+                $"==================\n";
 
-            for(int i = 0; i < times; i++)
+            for (int i = 0; i < times; i++)
             {
-                result += $"{i}# ";
+                result += $"{i + 1}# ";
                 result += RowNormalDice(action);
                 result += i == times - 1 ? string.Empty : "\n";
             }
