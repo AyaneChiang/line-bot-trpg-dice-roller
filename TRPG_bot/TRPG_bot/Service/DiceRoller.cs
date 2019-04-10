@@ -45,7 +45,7 @@ namespace TRPG_bot.Service
             {
                 int num_dice = GetRandom(sides);
                 dice_total += num_dice;
-                history += num_dice;
+                history += num_dice.ToString().PadLeft(2);
                 history += i + 1 == times ? string.Empty : "+";
             }
 
@@ -58,7 +58,7 @@ namespace TRPG_bot.Service
                 plus += "+" + num_plus;
             }
 
-            return $"{total.ToString().PadLeft(2)} = {dice_total.ToString().PadLeft(2)}[{history}]{plus}";
+            return $"{dice_total.ToString().PadLeft(2)}[{history}]{plus} = {total.ToString().PadLeft(2)}";
 
         }
 
@@ -98,7 +98,7 @@ namespace TRPG_bot.Service
 
             string result =
                 $"{input}\n" +
-                $"{times}次擲骰{action}\n";
+                $"==================\n";
 
             for (int i = 0; i < times; i++)
             {
