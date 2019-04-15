@@ -29,37 +29,59 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static string RowNormalDice(string input)
         {
-            string action = Regex.Match(input, Global.REG_DICE_DEFAULT).Value;
-            int times = int.Parse(Regex.Split(action, "d")[0]);
-            int sides = int.Parse(Regex.Split(action, "d")[1].Split("+")[0]);
-
-            if (!ValidHelpler.NormalDice(action, out string msg))
-                return msg;
-
-            string history = string.Empty;
-            string plus = string.Empty;
-            int dice_total = 0;
+            var cmdList = Regex.Match(input, Global.REG_NOT_SPACE).Value.Split("+");
+            string result = string.Empty;
             int total = 0;
+            int count = 1;
+
+            foreach (var cmd in cmdList)
+            {
+                // 骰子
+                if (Regex.IsMatch(cmd, Global.REG_DICE_DEFAULT))
+                {
+                    if (!ValidHelpler.NormalDice(cmd, out string msg))
+                        return msg;
+                    result += RowDice(cmd, out int cmdTotal);
+                    total += cmdTotal;
+                }
+                // 數字
+                else if (Regex.IsMatch(cmd, Global.REG_NUMS))
+                {
+                    result += cmd;
+                    total += int.Parse(cmd);
+                }
+
+                if (count < cmdList.Length)
+                    result += "+";
+                count++;
+            }
+
+            return $"{result} = {total.ToString().PadLeft(2)}";
+
+        }
+
+        /// <summary>
+        /// 處理骰子
+        /// </summary>
+        /// <param name="command"></param>
+        /// <param name="total"></param>
+        /// <returns></returns>
+        public static string RowDice(string command, out int total)
+        {
+            total = 0;
+            int times = int.Parse(Regex.Split(command, "d")[0]);
+            int sides = int.Parse(Regex.Split(command, "d")[1]);
+            string history = string.Empty;
 
             for (int i = 0; i < times; i++)
             {
                 int num_dice = GetRandom(sides);
-                dice_total += num_dice;
+                total += num_dice;
                 history += num_dice.ToString().PadLeft(2);
                 history += i + 1 == times ? string.Empty : "+";
             }
 
-            total += dice_total;
-
-            if (Regex.Split(action, "d")[1].Split("+").Length > 1)
-            {
-                int num_plus = int.Parse(action.Split("+")[1]);
-                total += num_plus;
-                plus += "+" + num_plus;
-            }
-
-            return $"{dice_total.ToString().PadLeft(2)}[{history}]{plus} = {total.ToString().PadLeft(2)}";
-
+            return $"{total.ToString().PadLeft(2)}[{history}]";
         }
 
         /// <summary>
@@ -83,16 +105,11 @@ namespace TRPG_bot.Service
         {
             var matchList = Regex.Matches(input, Global.REG_NOT_SPACE);
             int times = int.Parse(matchList.First().Value);
-            string normal = input.Substring(matchList.First().Length + 1, input.Length - (matchList.First().Length + 1));
-            string action = Regex.Match(normal, Global.REG_DICE_DEFAULT).Value;
-            string comment = matchList.Count > 2 ? matchList.Last().Value : string.Empty;
+            string action = matchList[1].Value;
 
             #region 防呆
             string msg = string.Empty;
             if (!ValidHelpler.MultiNormalDice(times, out msg))
-                return msg;
-
-            if (!ValidHelpler.NormalDice(action, out msg))
                 return msg;
             #endregion
 

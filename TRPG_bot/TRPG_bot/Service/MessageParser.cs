@@ -15,11 +15,11 @@ namespace TRPG_bot.Service
             List<string> result = new List<string>();
 
             // 基本骰
-            if (Regex.Match(text, Global.REG_DICE_DEFAULT).Success)
+            if (Regex.Match(text, Global.REG_DICE_NORMAL).Success)
                 result.Add(DiceRoller.GetNormalDiceResult(text));
 
             // 多次基本骰
-            if (Regex.Match(text, Global.REG_DICE_DEFAULT_MULTIPLE).Success)
+            if (Regex.Match(text, Global.REG_DICE_NORMAL_MULTIPLE).Success)
                 result.Add(DiceRoller.RowMultiNormalDice(text));
             
             // 死亡flag

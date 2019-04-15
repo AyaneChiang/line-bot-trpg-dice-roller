@@ -12,13 +12,25 @@ namespace TRPG_bot.Model
         #endregion
 
         /// <summary>
-        /// 基本骰子(多次)
+        /// 多次基本骰子(2 1d6+2)
         /// </summary>
-        public const string REG_DICE_DEFAULT_MULTIPLE = @"^\d+\s+\d+d\d+(\+\d+)?";
+        public const string REG_DICE_NORMAL_MULTIPLE = @"^\d+\s+((\d+d\d+)(\+\d+)*\+*)+";
         /// <summary>
-        /// 基本骰子
+        /// 骰子(1d6)
         /// </summary>
-        public const string REG_DICE_DEFAULT = @"^\d+d\d+(\+\d+)?";
+        public const string REG_DICE_DEFAULT = @"^\d+d\d+";
+        /// <summary>
+        /// 基本骰(1d6+2+1d20)
+        /// </summary>
+        public const string REG_DICE_NORMAL = @"^((\d+d\d+)(\+\d+)*\+*)+";
+        /// <summary>
+        /// +
+        /// </summary>
+        public const string REG_PLUS = @"\+";
+        /// <summary>
+        /// 數字 \d+
+        /// </summary>
+        public const string REG_NUMS = @"\d+";
         /// <summary>
         /// 空白
         /// </summary>
@@ -34,7 +46,7 @@ namespace TRPG_bot.Model
         /// <summary>
         /// 猜拳
         /// </summary>
-        public const string REG_ROCK_PAPER_SCISSORS = @"來猜拳\s+(剪刀|石頭|布)";
+        public const string REG_ROCK_PAPER_SCISSORS = @"來猜拳\s+(剪刀|石頭|布)?";
         /// <summary>
         /// 查詢指令
         /// </summary>
