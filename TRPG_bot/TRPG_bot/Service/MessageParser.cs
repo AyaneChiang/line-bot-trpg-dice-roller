@@ -36,7 +36,8 @@ namespace TRPG_bot.Service
                     $"基本多面骰：1d6+3\n" +
                     $"多次基本骰：3 1d6+2\n" +
                     $"死亡flag\n" +
-                    $"猜拳：來猜拳 石頭");
+                    $"猜拳(指定)：來猜拳 石頭\n" +
+                    $"隨機猜拳：來猜拳");
 
             return result;
         }
