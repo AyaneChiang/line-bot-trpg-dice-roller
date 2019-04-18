@@ -24,9 +24,9 @@ namespace TRPG_bot.Model
         /// </summary>
         public const string REG_DICE_NORMAL = @"^((\d+d\d+)(\+\d+)*\+*)+";
         /// <summary>
-        /// +
+        /// +/-
         /// </summary>
-        public const string REG_PLUS = @"\+";
+        public const string REG_PLUS_AND_MINUS = @"[\+-]";
         /// <summary>
         /// 數字 \d+
         /// </summary>
@@ -47,6 +47,10 @@ namespace TRPG_bot.Model
         /// 猜拳
         /// </summary>
         public const string REG_ROCK_PAPER_SCISSORS = @"來猜拳\s+(剪刀|石頭|布)?";
+        /// <summary>
+        /// 猜拳隨機
+        /// </summary>
+        public const string REG_ROCK_PAPER_SCISSORS_RANDOM = @"來猜拳";
         /// <summary>
         /// 查詢指令
         /// </summary>
