@@ -27,7 +27,7 @@ namespace TRPG_bot.Service
                 result.Add(FlagBuilder.Get());
 
             // 猜拳
-            if (Regex.Match(text, Global.REG_ROCK_PAPER_SCISSORS).Success)
+            if (Regex.Match(text, Global.REG_ROCK_PAPER_SCISSORS_RANDOM).Success)
                 result.Add(DiceRoller.DoJianken(text));
 
             //查詢指令

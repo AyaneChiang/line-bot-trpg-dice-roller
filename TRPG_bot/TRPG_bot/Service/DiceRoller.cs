@@ -29,30 +29,56 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static string RowNormalDice(string input)
         {
-            var cmdList = Regex.Match(input, Global.REG_NOT_SPACE).Value.Split("+");
+            var fullCmd = Regex.Match(input, Global.REG_NOT_SPACE).Value;
+            var cmdList = fullCmd.Split(new char[] { '+', '-' });
             string result = string.Empty;
             int total = 0;
             int count = 1;
 
             foreach (var cmd in cmdList)
             {
+                var math = count == 1 ? "+" : fullCmd.FirstOrDefault().ToString();
+                var subLength = count == 1 ? 0 : 1;
+                fullCmd = fullCmd.Substring(subLength, fullCmd.Length - subLength);
+
+                if (count > 1)
+                    result += math;
+
                 // 骰子
                 if (Regex.IsMatch(cmd, Global.REG_DICE_DEFAULT))
                 {
                     if (!ValidHelpler.NormalDice(cmd, out string msg))
                         return msg;
                     result += RowDice(cmd, out int cmdTotal);
-                    total += cmdTotal;
+                    switch (math)
+                    {
+                        case "+":
+                            total += cmdTotal;
+                            break;
+                        case "-":
+                            total -= cmdTotal;
+                            break;
+                        default:
+                            break;
+                    }
                 }
                 // 數字
                 else if (Regex.IsMatch(cmd, Global.REG_NUMS))
                 {
                     result += cmd;
-                    total += int.Parse(cmd);
+                    switch (math)
+                    {
+                        case "+":
+                            total += int.Parse(cmd);
+                            break;
+                        case "-":
+                            total -= int.Parse(cmd);
+                            break;
+                        default:
+                            break;
+                    }
                 }
-
-                if (count < cmdList.Length)
-                    result += "+";
+                fullCmd = fullCmd.Substring(cmd.Length, fullCmd.Length - cmd.Length);
                 count++;
             }
 
@@ -136,10 +162,18 @@ namespace TRPG_bot.Service
         /// <returns></returns>
         public static string DoJianken(string input)
         {
-            string action = Regex.Match(input, Global.REG_ROCK_PAPER_SCISSORS).Value;
-            string player = Regex.Split(action, Global.REG_SPACE).Last();
-            JiankenType type = player.ToEnum<JiankenType>();
-            return $"{EnumExt.GetRandom<JiankenType>().GetEmoji()} vs {type.GetEmoji()}";
+            Match match = Regex.Match(input, Global.REG_ROCK_PAPER_SCISSORS);
+            if (match.Success)
+            {
+                string action = match.Value;
+                string player = Regex.Split(action, Global.REG_SPACE).Last();
+                JiankenType type = player.ToEnum<JiankenType>();
+                return $"{EnumExt.GetRandom<JiankenType>().GetEmoji()} vs {type.GetEmoji()}";
+            }
+            else
+            {
+                return EnumExt.GetRandom<JiankenType>().GetEmoji();
+            }
         }
         #endregion
     }
