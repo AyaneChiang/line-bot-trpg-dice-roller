@@ -50,33 +50,13 @@ namespace TRPG_bot.Service
                     if (!ValidHelpler.NormalDice(cmd, out string msg))
                         return msg;
                     result += RowDice(cmd, out int cmdTotal);
-                    switch (math)
-                    {
-                        case "+":
-                            total += cmdTotal;
-                            break;
-                        case "-":
-                            total -= cmdTotal;
-                            break;
-                        default:
-                            break;
-                    }
+                    total = CountDice(math, total, cmdTotal);
                 }
                 // 數字
                 else if (Regex.IsMatch(cmd, Global.REG_NUMS))
                 {
                     result += cmd;
-                    switch (math)
-                    {
-                        case "+":
-                            total += int.Parse(cmd);
-                            break;
-                        case "-":
-                            total -= int.Parse(cmd);
-                            break;
-                        default:
-                            break;
-                    }
+                    total = CountDice(math, total, int.Parse(cmd));
                 }
                 fullCmd = fullCmd.Substring(cmd.Length, fullCmd.Length - cmd.Length);
                 count++;
@@ -84,6 +64,29 @@ namespace TRPG_bot.Service
 
             return $"{result} = {total.ToString().PadLeft(2)}";
 
+        }
+
+        /// <summary>
+        /// 計算
+        /// </summary>
+        /// <param name="math">+/-</param>
+        /// <param name="total"></param>
+        /// <param name="num"></param>
+        /// <returns></returns>
+        private static int CountDice(string math, int total, int num)
+        {
+            switch (math)
+            {
+                case "+":
+                    total += num;
+                    break;
+                case "-":
+                    total -= num;
+                    break;
+                default:
+                    break;
+            }
+            return total;
         }
 
         /// <summary>
