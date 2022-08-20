@@ -27,7 +27,7 @@ namespace TRPG_bot.Service
                 result.Add(FlagBuilder.Get());
 
             // 猜拳
-            if (Regex.Match(text, Global.REG_ROCK_PAPER_SCISSORS).Success)
+            if (Regex.Match(text, Global.REG_ROCK_PAPER_SCISSORS_RANDOM).Success)
                 result.Add(DiceRoller.DoJianken(text));
 
             //查詢指令
@@ -36,7 +36,8 @@ namespace TRPG_bot.Service
                     $"基本多面骰：1d6+3\n" +
                     $"多次基本骰：3 1d6+2\n" +
                     $"死亡flag\n" +
-                    $"猜拳：來猜拳 石頭");
+                    $"猜拳(指定)：來猜拳 石頭\n" +
+                    $"隨機猜拳：來猜拳");
 
             return result;
         }
