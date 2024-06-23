@@ -49,32 +49,30 @@ namespace TRPG_bot.Controllers
                 return BadRequest(e);
             }
 
-            if (webhookEvent == null)
-                return BadRequest(json);
-
-
-            switch (webhookEvent.Type)
+            if (webhookEvent != null)
             {
-                case WebhookEventType.Message:
-                    MessageEvent message = (MessageEvent)webhookEvent;
-                    string token = message.ReplyToken;
+                switch (webhookEvent.Type)
+                {
+                    case WebhookEventType.Message:
+                        MessageEvent message = (MessageEvent)webhookEvent;
+                        string token = message.ReplyToken;
                     
-                    switch (message.Message.Type)
-                    {
-                        /// 文字訊息
-                        case EventMessageType.Text:
-                            List<string> result = MessageParser.Parse((TextEventMessage)message.Message);
-                            if(result.Count > 0)
-                                await ReplyMessageAsync(token, result);
-                            break;
-                        default:
-                            break;
-                    }
-                    break;
-                default:
-                    break;
+                        switch (message.Message.Type)
+                        {
+                            /// 文字訊息
+                            case EventMessageType.Text:
+                                List<string> result = MessageParser.Parse((TextEventMessage)message.Message);
+                                if(result.Count > 0)
+                                    await ReplyMessageAsync(token, result);
+                                break;
+                            default:
+                                break;
+                        }
+                        break;
+                    default:
+                        break;
+                }
             }
-
             return Ok();
         }
         
